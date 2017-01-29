@@ -1,3 +1,4 @@
+# User Resource controller
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
@@ -20,32 +21,45 @@ class UsersController < ApplicationController
     if @user.save
       render json: @user, status: :created, location: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render_error @user, :unprocessable_entity
     end
   end
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
+    if @user.update_attributes(user_params)
+      render json: @user, status: :ok
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render_error @user, :unprocessable_entity
     end
   end
 
   # DELETE /users/1
   def destroy
     @user.destroy
+    head 204
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def user_params
-      params.require(:user).permit(:full_name, :email, :password, :password_confirmation)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    user = User.new
+    user.errors.add(:id, 'Wrong ID provided')
+    render_error(user, :not_found)
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def user_params
+    ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+  end
+
+  def render_error(resource, status)
+    render(json: resource,
+           status: status,
+           adapter: :json_api,
+           serializer: ActiveModel::Serializer::ErrorSerializer)
+  end
 end
