@@ -11,7 +11,9 @@ application up and running.
  - using sqlite as the backend db
  - Run `bin/rake db:setup` to create a database for the application`
 
-* How to run the test suite
+## How to run the test suite
+
+inside the project directory run `rspec` to check all project specs.
 
 * Services (job queues, cache servers, search engines, etc.)
 
