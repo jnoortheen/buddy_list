@@ -32,6 +32,9 @@ group :development, :test do
   # for BDD specs
   gem 'rspec-rails', '>= 3.5.0'
   gem 'rails-controller-testing'
+
+  # to generate random data
+  gem 'faker'
 end
 
 group :development do
