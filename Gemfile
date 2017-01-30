@@ -52,3 +52,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 
 # For JWT Authorisation support
 gem 'jwt', '~> 1.5.4'
+
+# For receiving mails with ease
+gem 'griddler'
+gem 'griddler-sendgrid'
