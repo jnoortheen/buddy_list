@@ -6,7 +6,7 @@ RSpec.describe User, type: :model do
       it 'creates new user record' do
         expect do
           User.create!(full_name: 'user_1',
-                       email: 'noor@mail.com',
+                       email: 'user_1@mail.com',
                        password: 'password')
         end.to change(User, :count).by(1)
       end

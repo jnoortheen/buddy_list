@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       render json: { access_token: JsonWebToken.encode(user_id: user.id) }
     else
-      user = User.new
+      user ||= User.new
       user.errors.add(:email, 'Invalid credentials')
       render_error(user, :unauthorized)
     end
