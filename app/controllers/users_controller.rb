@@ -1,11 +1,11 @@
 # User Resource controller
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  skip_before_action :set_current_user, :authenticate_request, only: [:create, :index]
 
   # GET /users
   def index
     @users = User.all
-
     render json: @users
   end
 
@@ -14,6 +14,7 @@ class UsersController < ApplicationController
     render json: @user
   end
 
+  # Signup new user
   # POST /users
   def create
     @user = User.new(user_params)
@@ -27,7 +28,10 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update_attributes(user_params)
+    # allow updates from own user account
+    if @user != @current_user
+      render_unauthorised_error
+    elsif @user.update_attributes(user_params)
       render json: @user, status: :ok
     else
       render_error @user, :unprocessable_entity
@@ -36,8 +40,13 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.destroy
-    head 204
+    # allow only deleting users own account
+    if @user != @current_user
+      render_unauthorised_error
+    else
+      @user.destroy
+      head 204
+    end
   end
 
   private
@@ -54,12 +63,5 @@ class UsersController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def user_params
     ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-  end
-
-  def render_error(resource, status)
-    render(json: resource,
-           status: status,
-           adapter: :json_api,
-           serializer: ActiveModel::Serializer::ErrorSerializer)
   end
 end

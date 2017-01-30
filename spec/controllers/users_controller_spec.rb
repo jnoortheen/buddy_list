@@ -21,11 +21,11 @@ RSpec.describe UsersController, type: :controller do
   describe 'GET #index' do
     it 'assigns all users as @users' do
       get :index
-      assert_response :success
+      expect(response).to have_http_status(:success)
       assert_equal response.content_type, 'application/json'
       jdata = JSON.parse response.body
-      assert_equal 6, jdata['data'].length
-      assert_equal jdata['data'][0]['type'], 'users'
+      expect(6).to eq(jdata['data'].length)
+      expect(jdata['data'][0]['type']).to eq('users')
     end
   end
 
