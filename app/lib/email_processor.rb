@@ -5,16 +5,17 @@ class EmailProcessor
   end
 
   def process
-    user = User.find_by email: @email.from
-    friend = User.find_by email: @email.body
+    action, friend_mail_id = @email.subject.split(' ')
+    user = User.find_by email: @email.from[:email]
+    friend = User.find_by email: friend_mail_id
 
     # if the users are not valid simply return
     return unless user && friend
 
-    case @email.subject
-    when 'add friend'
+    case action
+    when 'add'
       user.add_friend(friend)
-    when 'remove friend'
+    when 'remove'
       user.remove_friend(friend)
     else
       raise('invalid mailer action')
