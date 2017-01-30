@@ -9,4 +9,14 @@ class User < ApplicationRecord
                           association_foreign_key: :friend_id
 
   validates :email, presence: true
+
+  def add_friend(user)
+    return if friendships.include?(user)
+    friendships << user
+  end
+
+  def remove_friend(user)
+    return unless friendships.include?(user)
+    friendships.delete(user)
+  end
 end
