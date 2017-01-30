@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
   def set_current_user
     return unless request.headers['Authorization'].present?
     # decoded object
-    dobj = JsonWebToken.decode(request.headers['Authorization'].split(' ').last)
+    dobj = JsonWebToken.decode(request.headers['Authorization'])
     # set current user
     @current_user = User.find(dobj[:user_id])
   end

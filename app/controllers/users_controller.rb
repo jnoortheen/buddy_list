@@ -1,7 +1,7 @@
 # User Resource controller
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  skip_before_action :set_current_user, :authenticate_request, only: [:create, :index]
+  skip_before_action :set_current_user, :authenticate_request, only: [:create]
 
   # GET /users
   def index

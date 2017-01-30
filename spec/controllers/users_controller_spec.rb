@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'json'
+require 'jwt_auth'
 
 RSpec.describe UsersController, type: :controller do
   fixtures :users
@@ -18,8 +19,15 @@ RSpec.describe UsersController, type: :controller do
 
   let(:invalid_data) { { data: { type: 'users' } } }
 
+  let(:user) { users('user_1') }
+
+  def auth_user(user)
+    request.headers['Authorization'] = JsonWebToken.encode(user_id: user.id)
+  end
+
   describe 'GET #index' do
     it 'assigns all users as @users' do
+      auth_user(user)
       get :index
       expect(response).to have_http_status(:success)
       assert_equal response.content_type, 'application/json'
@@ -31,7 +39,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'GET #show' do
     it 'assigns the requested user as @user' do
-      user = users('user_1')
+      auth_user(user)
       get :show, params: { id: user.to_param }
       jdata = JSON.parse response.body
       expect(user.id.to_s).to eq(jdata['data']['id'])
@@ -41,8 +49,14 @@ RSpec.describe UsersController, type: :controller do
     end
 
     it 'returns error for invalid user_id' do
+      auth_user(user)
       get :show, params: { id: 'z' }
       expect(response).to have_http_status(404)
+    end
+
+    it 'returns error for unauthorised usage' do
+      get :show, params: { id: 'z' }
+      expect(response).to have_http_status(401)
     end
   end
 
@@ -75,39 +89,45 @@ RSpec.describe UsersController, type: :controller do
           type: 'users',
           attributes:
           {
-            full_name: 'user_1',
             email: 'user11@mail.com'
           }
         }
       end
 
-      it 'updates the requested user' do
-        user = User.create! valid_data[:attributes]
+      def update_user
         update_data[:id] = user.to_param
         put :update, params: { id: user.to_param, data: update_data }
         user.reload
+      end
+
+      it 'updates the requested user' do
+        auth_user(user)
+        update_user
         expect(update_data[:attributes][:email]).to eq(user.email)
       end
 
+      it 'fails to update without JWT' do
+        update_user
+        expect(response).to have_http_status(401)
+      end
+
       it 'assigns the requested user as @user' do
-        user = User.create! valid_data[:attributes]
+        auth_user(user)
         put :update, params: { id: user.to_param, user: valid_data }
         expect(assigns(:user)).to eq(user)
       end
-    end
 
-    context 'with invalid params' do
-      it 'assigns the user as @user' do
-        user = User.create! valid_data[:attributes]
-        put :update, params: { id: user.to_param, user: invalid_data }
-        expect(assigns(:user)).to eq(user)
+      it 'fails to update other users' do
+        auth_user(user)
+        put :update, params: { id: users('user_2').to_param, user: valid_data }
+        expect(response).to have_http_status(401)
       end
     end
   end
 
   describe 'DELETE #destroy' do
     it 'destroys the requested user' do
-      user = User.create! valid_data[:attributes]
+      auth_user(user)
       expect {
         delete :destroy, params: {id: user.to_param}
       }.to change(User, :count).by(-1)
