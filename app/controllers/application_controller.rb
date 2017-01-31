@@ -1,3 +1,5 @@
+require 'jwt_auth'
+
 # Controller Parent class
 # methods available to all sub-classes
 class ApplicationController < ActionController::API
@@ -8,7 +10,7 @@ class ApplicationController < ActionController::API
   def set_current_user
     return unless request.headers['Authorization'].present?
     # decoded object
-    dobj = JsonWebToken.decode(request.headers['Authorization'])
+    dobj = JsonWebToken.decode(request.headers['Authorization'].split(' ').last)
     # set current user
     @current_user = User.find(dobj[:user_id])
   end

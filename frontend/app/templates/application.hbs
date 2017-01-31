@@ -2,12 +2,16 @@
   {{#link-to "index"}}
     Index
   {{/link-to}}
-  {{#link-to "login"}}
-    Login
-  {{/link-to}}
-  {{#link-to "signup"}}
-    Sign up
-  {{/link-to}}
+  {{#if session.isAuthenticated}}
+    <span>{{sessionAccount.currentUser.email}}</span>
+    <button {{action "logout"}}>Logout</button>
+  {{else}}
+    {{#link-to "login"}}
+      Login
+    {{/link-to}}
+    {{#link-to "signup"}}
+      Sign up
+    {{/link-to}}
+  {{/if}}
 </nav>
-
 {{outlet}}

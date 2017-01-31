@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post 'signin', to: 'sessions#signin'
+  post 'login', to: 'sessions#login'
 
   # handle incoming mails
   mount_griddler

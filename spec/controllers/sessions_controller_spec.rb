@@ -18,11 +18,11 @@ RSpec.describe SessionsController, type: :controller do
 
   let(:invalid_data) { { data: { type: 'users' } } }
 
-  describe 'POST #signin' do
+  describe 'POST #login' do
     context 'with correct credentials' do
       it 'return JWT' do
         user = User.create!(valid_data[:attributes])
-        post :signin, params: {
+        post :login, params: {
           email: user.email,
           password: valid_data[:attributes][:password]
         }
@@ -36,7 +36,7 @@ RSpec.describe SessionsController, type: :controller do
     context 'invalid credentials' do
       it 'returns error message' do
         user = User.create!(valid_data[:attributes])
-        post :signin, params: {
+        post :login, params: {
           email: user.email,
           password: 'pwd123'
         }

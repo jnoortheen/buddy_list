@@ -23,6 +23,11 @@ module.exports = function(environment) {
     }
   };
 
+  ENV['ember-simple-auth'] = {  
+    authorizer: 'authorizer:oauth2',
+    routeAfterAuthentication: '/'
+  };
+
   if (environment === 'development') {
     ENV.apiURL = 'http://127.0.0.1:3000';
     // ENV.APP.LOG_RESOLVER = true;
