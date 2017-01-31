@@ -35,6 +35,17 @@ RSpec.describe UsersController, type: :controller do
       expect(6).to eq(jdata['data'].length)
       expect(jdata['data'][0]['type']).to eq('users')
     end
+    context 'me parameter' do
+      it 'returns current user' do
+        auth_user(user)
+        get :index, params: { me: true }
+        expect(response).to have_http_status(:success)
+        assert_equal response.content_type, 'application/json'
+        jdata = JSON.parse response.body
+        expect(jdata['data']['type']).to eq('users')
+        expect(jdata['data']['id']).to eq(user.id.to_s)
+      end
+    end
   end
 
   describe 'GET #show' do

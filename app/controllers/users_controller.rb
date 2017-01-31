@@ -5,7 +5,13 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all
+    @users =
+      if params[:me].present?
+        # return current user if asked
+        @current_user
+      else
+        User.all
+      end
     render json: @users
   end
 
