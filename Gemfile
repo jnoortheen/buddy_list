@@ -56,3 +56,6 @@ gem 'jwt', '~> 1.5.4'
 # For receiving mails with ease
 gem 'griddler'
 gem 'griddler-sendgrid'
+
+# to work with ember in rails environment
+gem "ember-cli-rails"

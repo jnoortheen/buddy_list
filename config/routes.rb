@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # handle requests from ember frontend app
+  mount_ember_app :frontend, to: "/"
+
   post 'signin', to: 'sessions#signin'
 
   # handle incoming mails
