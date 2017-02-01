@@ -1,5 +1,5 @@
 <h2>{{title}}</h2>
-<table style="width: 100%; padding: 2%; border-spacing: 1vh;">
+<table style="width: 100%; padding: 1vh; border-spacing: 1vh;">
   <tr>
     <th style="text-align: left;">Name</th>
     <th style="text-align: left;">Mail ID</th>
@@ -7,7 +7,7 @@
   {{#each users as |user|}}
   <tr>
     <td>{{user.full_name}}</td>
-    <td>{{user.email}}</td>
+    <td><a href="mailto:test@example.com?Subject={{actionSubject}}%20{{user.email}}" target="_top">{{user.email}}</a></td>
   </tr>
   {{/each}}
 </table>
