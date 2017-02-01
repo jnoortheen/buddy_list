@@ -6,11 +6,10 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users =
-      if params[:me].present?
-        # return current user if asked
-        @current_user
-      else
-        User.all
+      case params[:who]
+      when 'me' then @current_user
+      when 'friends' then @current_user.friends
+      else User.all
       end
     render json: @users
   end

@@ -1,6 +1,11 @@
-<nav>
+<nav style="padding: 2vh; margin: 2vh;">
   {{#if session.isAuthenticated}}
-    <span>{{sessionAccount.currentUser.full_name}}</span>
+    {{#link-to "index"}}
+      Index
+    {{/link-to}}
+    {{#link-to "list"}}
+      Users List
+    {{/link-to}}
     <button {{action "logout"}}>Logout</button>
   {{else}}
     {{#link-to "login"}}
@@ -11,4 +16,14 @@
     {{/link-to}}
   {{/if}}
 </nav>
+
+{{#if session.isAuthenticated}}
+<h2>User</h2>
+{{sessionAccount.currentUser.full_name}}
+<br>
+{{sessionAccount.currentUser.email}}
+<br>
+{{user-table title="Friends" users=sessionAccount.currentUser.friends}}
+<br>
+{{/if}}
 {{outlet}}
