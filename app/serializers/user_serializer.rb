@@ -4,6 +4,8 @@ class UserSerializer < ActiveModel::Serializer
 
   attributes :id, :full_name, :email, :links
 
+  has_many :friends
+
   def links
     { self: user_path(object.id) }
   end
