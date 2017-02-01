@@ -20,6 +20,7 @@ end
   user = User.all[n]
   choice = (0...NR_REC).to_a
   choice.delete(n)
-  user.friendships << User.all[choice.sample]
-  user.friendships << User.all[choice.sample]
+  # add any of the two users as friends
+  user.add_friend User.all[choice.sample]
+  user.add_friend User.all[choice.sample]
 end

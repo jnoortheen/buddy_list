@@ -1,4 +1,10 @@
+# Serialize User Model to JSON
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :full_name, :email
-  has_many :friendships
+  include Rails.application.routes.url_helpers
+
+  attributes :id, :full_name, :email, :links
+
+  def links
+    { self: user_path(object.id) }
+  end
 end

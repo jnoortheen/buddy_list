@@ -5,7 +5,6 @@ class SessionsController < ApplicationController
   skip_before_action :set_current_user, :authenticate_request
 
   def login
-    puts get_identifier
     user = User.find_by email: get_identifier
     if user && user.authenticate(params[:password])
       render json: { access_token: JsonWebToken.encode(user_id: user.id) }

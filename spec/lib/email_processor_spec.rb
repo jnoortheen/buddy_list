@@ -24,14 +24,14 @@ RSpec.describe 'EmailProcessor' do
       it 'adds to friends list' do
         user, friend = EmailProcessor.new(new_mail('add')).process
         expect(user.friendships.count).to eq(1)
-        expect(user.friendships).to include(friend)
+        expect(user.friends).to include(friend)
       end
     end
     context 'remove friend' do
       it 'removes user from friends list' do
         user, friend = EmailProcessor.new(new_mail('remove')).process
         expect(user.friendships.count).to eq(0)
-        expect(user.friendships).not_to include(friend)
+        expect(user.friends).not_to include(friend)
       end
     end
   end
