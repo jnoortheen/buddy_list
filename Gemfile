@@ -33,6 +33,7 @@ group :development, :test do
   gem 'rspec-rails', '>= 3.5.0'
   gem 'rails-controller-testing'
   gem 'capybara'
+  gem 'selenium-webdriver'
 
   # to generate random data
   gem 'faker'
