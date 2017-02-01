@@ -64,3 +64,6 @@ gem 'griddler-sendgrid'
 
 # to work with ember in rails environment
 gem "ember-cli-rails"
+gem 'rails_12factor', group: [:staging, :production]
+
+ruby "2.3.3"

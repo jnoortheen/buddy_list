@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Widget management', type: :feature, js: true do
+RSpec.feature 'User registration', type: :feature, js: true do
   
   scenario 'with valid data' do
     skip 'integration test fails because of ember build times'
@@ -11,12 +11,12 @@ RSpec.feature 'Widget management', type: :feature, js: true do
   end
 
   def sign_up_with(full_name, email, password)
-    visit '/login'
+    # visit '/login'
 
     expect(page).to have_content('Sign up')
-    # visit '/signup'
-    # expect(page).to have_content('Full Name')
-    print "\npath", page.current_path, "\n"
+    visit '/signup'
+    print "\npath", page.current_path, page.body, "\n"
+    expect(page).to have_content('Full Name')
     # fill_in 'Full Name', with: full_name
     page.save_screenshot('screen.png')
     fill_in 'Email ID', with: email
