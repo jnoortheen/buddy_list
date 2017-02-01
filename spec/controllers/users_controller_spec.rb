@@ -38,7 +38,7 @@ RSpec.describe UsersController, type: :controller do
     context 'me parameter' do
       it 'returns current user' do
         auth_user(user)
-        get :index, params: { me: true }
+        get :index, params: { who: 'me' }
         expect(response).to have_http_status(:success)
         assert_equal response.content_type, 'application/json'
         jdata = JSON.parse response.body

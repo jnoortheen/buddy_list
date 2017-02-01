@@ -32,9 +32,13 @@ group :development, :test do
   # for BDD specs
   gem 'rspec-rails', '>= 3.5.0'
   gem 'rails-controller-testing'
+  gem 'capybara'
 
   # to generate random data
   gem 'faker'
+
+  # for local development only
+  gem 'rack-cors', :require => 'rack/cors'
 end
 
 group :development do
