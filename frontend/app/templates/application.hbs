@@ -1,9 +1,6 @@
 <nav>
-  {{#link-to "index"}}
-    Index
-  {{/link-to}}
   {{#if session.isAuthenticated}}
-    <span>{{sessionAccount.currentUser.email}}</span>
+    <span>{{sessionAccount.currentUser.full_name}}</span>
     <button {{action "logout"}}>Logout</button>
   {{else}}
     {{#link-to "login"}}
